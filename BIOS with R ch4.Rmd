@@ -1,0 +1,125 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+ Biostats. & Epidemi. in R. 
+ Chapter 4 (Base or Tradtional Graphics)
+
+
+```{r}
+x <- 1:25
+plot(x)
+```
+
+```{r}
+xx <- c(1, 2, 3, 4, 5)
+yy <- c(1, 4, 9, 16, 25)
+X <- data.frame(xx, yy)
+X
+pairs(X)
+```
+
+
+coplot uses this formula: coplot(a ~ b | c + d),
+This outputs scatter plots of a versus b for every joint conditioning interval of c and d.
+```{r}
+#a simple coplot
+coplot(lat ~ long | depth, data = quakes)
+```
+
+Example of persp(x, y, z...)
+```{r}
+require(grDevices) #for trans3d
+```
+```{r}
+x <- seq(-10, 10, length = 30)
+y <- x
+f <- function(x, y) {r <- sqrt(x^2 + y^2); 10 * sin(r)/r}
+z <- outer(x, y, f)
+z[is.na(z)] <- 1
+op <- par(bg = "white")
+persp(x, y, z, theta = 30, phi = 30, expand = 0.5, col = "lightblue")
+```
+```{r}
+persp(x, y, z, theta = 30, phi = 30, expand = 0.5, col = "pink",
+      ltheta = 120, shade = 0.75, ticktype = "detailed",
+      xlab = "X", ylab = "Y", zlab = "Sinc(r)")
+```
+
+# Argugments of high-level plotting function - see page 161 in book. (or just documentation for this)
+- it is possible to add legend boxs
+
+#There are also graphic parameters that can be manipulated
+
+#See page 168 on how to do Multiple figure outputs
+-"In R, one may create an n × m  array of figures in a page, with each figure having its own margins and with the array of figures optionally surrounded by an outer margin or border. In the documentation of par{graphics}..."
+
+
+# Exercises for section 4.1 
+```{r}
+#2 Blood pressure
+bpsystolic <- c(145, 150, 135, 140, 160, 170, 138, 168, 155, 165)
+diff(bpsystolic) #What this means: # In this vector, the elements are the consecutive differences of the daily measured systolic blood pressures of the patient.
+mean(bpsystolic)
+mean(diff(bpsystolic))
+```
+```{r}
+#3
+boxplot(145, 150, 135, 140, 160, 170, 138, 168, 155, 165)
+```
+```{r}
+#4
+calories <- c(2450, 2439, 2866, 2618)
+fat.percent <- c(37.0, 36.2, 34.0, 32.1)
+carb.percent <- c(43.1, 42.2, 50.0, 48.1)
+
+# first convert  fat and carbs to number of calories
+fat.cal <- c(906.5, 882.9, 974.4, 840.4) # this shows it is fluctuation
+
+#5...just box plots!
+```
+```{r}
+# 6 
+group.midage<-c(2.5, 7.5, 13, 16.5, 17.5, 19, 22.5, 44.5, 70-5) 
+accidents <- c(28, 46, 58, 20, 31, 64,149, 316, 103)
+
+#combine these 2 parameters
+age.acc <- rep(group.midage, accidents) #rep(x) replicates the values in x, 
+
+#define breakpoints:
+breakpoint <- c(0, 5, 10, 16, 17, 18, 20, 25, 60, 80) # the "bins"
+
+#plot this as a histogram
+hist(age.acc, breaks = breakpoint) #plot THIS data, using THESE bins)... diff than what's in book??
+```
+```{r}
+#7
+library(HSAUR2)
+data("water", package = "HSAUR2")
+water
+
+g <- ggplot(data = water, aes(hardness, mortality)) +
+  geom_point() #couldn't figure out with just plot(x)...
+g
+
+```
+```{r}
+plot (x = water$hardness, y = water$mortality)
+abline(lm(mortality ~ hardness, data = water))
+legend("topright", legend = levels(water$location), pch=c(1, 2), bty= "n")
+ # just plot(water) did NOT work???? whY???? Ahhhhhh!
+```
+```{r}
+hist(water$hardness)
+```
+```{r}
+boxplot(water$mortality)
+```
+
+```{r}
+#8
+```
+
+
+
+

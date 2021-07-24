@@ -1,0 +1,304 @@
+---
+title: "Ch. notes/examples + exercises in BioStats with R book"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+
+# CHAPTER 3 #
+## SECTION 3.4 ##
+
+```{r}
+# From page 102
+
+pms.pain <- c(1, 4, 3, 3, 2, 4) #pain ratings 
+fpms.pain <- factor(pms.pain, level = 1:4) #the factor, setting it up, for categorical variables
+levels(fpms.pain) <- c("none", "mild", "moderate", "severe") #the factor coding
+
+fpms.pain
+
+as.numeric(fpms.pain)
+
+levels(fpms.pain)
+```
+
+```{r}
+weight <- c(73, 59, 97)
+height <- c(1.79, 1.64, 1.73)
+bmi <- weight/height^2
+
+plot(weight, height) #note that weight will be on X axis, since it was named first (normally, the independent variable). 
+```
+
+```{r}
+# matricies
+
+x <- 1:15
+dim(x) <- c(3, 5)
+
+# OR you can do:
+
+matrix(1:15, nrow = 3, byrow = T)
+
+colnames(x) <- c("C1", "C2", "C3", "C4", "C5")
+x #the standard is to order by column, unless you do byrow = T
+#can also to t(x)  to get the transposed (?)
+```
+```{r}
+Y <- LETTERS
+M <- month.name
+
+Y
+M
+#OR
+mm <-month.abb
+
+mm
+```
+
+MAKING A DATA FRAME (pg 118, later in the book you will use this dataframe)
+```{r}
+aml <- read.csv("~/R/AML.csv", sep=";")
+aml
+ 
+```
+```{r}
+vector1 <- c(8, 98, 5, 115)
+
+vector2 <- c(22, 76, 16, 69)
+
+matrix1 <- matrix(vector1, 2, 2)
+matrix2 <- matrix(vector2, 2, 2)
+
+#entering data for an array
+udata <- array(c(vector1, vector2), c(2, 2, 2))
+apply(udata, c(1, 2), sum)
+
+x <- list(crude.data = udata, stratified.data = udata) #udata.tot doesn't work??
+x$crude.data
+
+
+```
+
+```{r}
+#Entering a simple data frame, pg 121
+
+subjectname <- c("Penny", "Priscilla", "Mia")
+subjectnumber <- 1:length(subjectname)
+age <- c(26, 27, 28)
+gender <- c("Woman", "Trans", "Woman")
+data1 <- data.frame(subjectnumber, subjectname, age, gender)
+data1
+```
+
+```{r}
+#Entering a simple function
+
+odds.ratio <- function(aa, bb, cc, dd){aa*dd/(bb*cc)}
+odds.ratio(30, 174, 21, 184) #Data from table 3.3
+```
+## Page 122, about the function scan
+library(base)
+?scan()
+"scan() converts tokens into data and then assembles the data into records" 
+and source() ... for more, see https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/source 
+
+
+## The spreadsheet interface in R (p.124)
+librar(utils)
+data.entry()
+edit() to edit
+
+** TO OPEN THE SPREADSHEET EDITOR USE THE FOLLOWING:>  newdata <- data.frame(), then: fix(newdata)**
+```{r}
+#How to make a list, with special titles:
+my.special.list <- list(name="John", wife="Mary", 
+                         number.of.children=3, children.age=c(2, 4, 6)) 
+my.special.list
+
+```
+```{r}
+#What's the name of John's wife?
+my.special.list$wife
+```
+
+## Exercises for section 3.4, # 1 
+```{r}
+data("bladdercancer", package = "HSAUR2")
+```
+```{r}
+# Sort the data frame by components using the following code:
+data1 <-  c(~ number + tumorsize, data = bladdercancer)
+data1
+```
+
+Another data frame (#2)
+```{r}
+library(mosaic)
+data("HELPrct")
+data2 <- c(data = HELPrct)
+data2
+```
+
+Another #3 (???)
+```{r}
+library(HSAUR2)
+data("USmelanoma")
+data
+data3 <- c(~mortality + latitude)
+data3 
+## ?? this did not work...
+```
+
+#4
+```{r}
+# First, create the variables as vectors
+organism <- c("Human", "Mouse", "Fruit Fly", "Roundworm", "Year")
+genomSizeBP <- c(3000000000, 3000000000, 135600000, 97000000, 12100000)
+estGeneCount<-c(30000,30000,13061,19099,6034) 
+```
+```{r}
+# Because these three vectors are of equal length, you can put them together in a dataframe. The format 
+# is "column name" = "vector to add".
+comparativeGenomSize <- 
+  data
+comparativeGenomSize <- 
+  data.frame(Organism = organism, GenomSizeBP = genomSizeBP,
+             EstGeneCount = estGeneCount)
+
+comparativeGenomSize
+```
+```{r}
+# Sort the data by components / aka break it down from a table/dataframe, so each varaible is isolated.
+data4 <- c(~ organism, data = comparativeGenomSize)
+data4
+```
+
+#5
+```{r}
+library(ISwR)
+data("airquality")
+aq <- edit(airquality) # after editing, close out to save, BUT open the data (aq) separately to see change! 
+# the original "airquality" is not change, but aq is! 
+```
+```{r}
+aq
+```
+
+
+## SECTION 3.5 ## 
+```{r}
+# p 134 
+y <- rexp(100); x
+rexp(n, rate = 1)
+```
+```{r}
+library(epibasix) # oackage that can be used to univariate analysis!
+univar(y) #gives a univariate summary: Sample Size, Mean, median, SD. 
+```
+```{r}
+x <- 1:100; x
+univar(x)
+```
+
+
+Package for bivariate data analysis: bivarRIpower
+"p 137. As an example, this package may be used to calculate the necessary sample size to achieve 80% power at 5% alpha level for null and alternative hypotheses so that the correlation between RIs is 0 and 0.2, respectively, across six time points. Other covariance parameters are set as follows:■ Correlation between residuals = 0■ Standard deviations: 1st RI = 1, 2nd RI = 2, 1st residual = 0.5, 2nd residual = 0.7"
+```{r}
+library(bivarRIpower)
+# function below is used to calculate the necessary sample size to acheive a given power %
+bivarcalcn(power = .8, powerfor = 'RI', timepts = 6, d1 =1, d2 =2,
+           p = 0, p1= .2, s1 = .5, s2 = .75, r = 0, r1 =.1)
+```
+
+```{r}
+#p. 142 Example 1 in Multivariate Data Analysis
+library(ISwR)
+data(cystfibr)
+cystfibr
+```
+```{r}
+# To obtain pairwise scatter plots between all variables
+par(mex = 0.5)
+pairs(cystfibr, gap = 0, cex.labels = 0.9) #this one also plots it? 
+# mex = graphocs parameter..., gap = 0 removes the space between subplots, cex.plots = .9 decreases font size
+
+plot(cystfibr)
+
+#permax variable may be considered the dependent variable here? because theyre all kinda the same in the permax column?
+```
+```{r}
+# You can also use biostat. modelling here and do the following: 
+data(cystfibr)
+lm(pemax ~ age + sex + height + weight + bmp + fev1 + rv + frc + tlc, data = cystfibr) #notice the position of variable pemax!
+```
+```{r}
+summary(lm(pemax ~ age + sex + height + weight + bmp + fev1 + rv + frc + tlc, data = cystfibr)) #the ANOVA table. Notice that all t-values are not signitifant, but F-statistic is. this suggested that not one (as in individually) of the variables is significant on its won, rather "it is not biostatstically clear whether any particular variable should be removed to form a reduced model". 
+```
+```{r}
+# Calculate the Adjusted R-squared
+R1 <- 25.47 # The residual standard error
+R2 <- 1 - R1^2/var(cystfibr$pemax)
+R2
+```
+
+Exercises for Section 3.5
+
+```{r}
+xx <- rnorm(1:50)
+xx
+
+library(epibasix)
+xx.u <- univar(xx)
+xx.u
+```
+```{r}
+#2
+library(ISwR)
+bp.obese
+plot(bp~obese, pch = ifelse(sex == 1, "F", "M"), data = bp.obese) #Need 2 equals?? Plot using Sex as a representation
+```
+
+```{r}
+#3
+library(ISwR)
+heart.rate
+evalq(interaction.plot(time, subj, hr), heart.rate)
+```
+
+```{r}
+#4
+library(HSAUR2)
+data("weightgain", package = "HSAUR2")
+weightgain
+
+#summarise the main features of this dataset by calculating the means and std. using the function tapply
+tapply(weightgain$weightgain, list(weightgain$source, weightgain$type), mean) #whut
+plot.design(weightgain)
+
+tapply(weightgain$weightgain, list(weightgain$source, weightgain$type), sd)
+```
+```{r}
+wq_aov <- aov(weightgain ~ source * type, data = weightgain)
+wq_aov
+summary(wq_aov)
+```
+
+```{r}
+interaction.plot(weightgain$type, weightgain$source, weightgain$weightgain)
+coef(wq_aov)
+options("contrasts")
+```
+```{r}
+coef(aov(weightgain~source + type + source:type, data = weightgain, contrasts = list(source = contr.sum)))
+```
+
+```{r}
+#5
+library(MCAPS) # does noot work.......
+#6...?
+```
+

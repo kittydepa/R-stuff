@@ -1,0 +1,47 @@
+---
+title: "Test/template graph"
+author: "Kitty Depa"
+date: "07/12/2020"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+# PLAY THIS CHUNK FIRST, make sure you have ggplot2 installed.
+
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+## Intervention Participant
+
+http://www.sthda.com/english/wiki/ggplot2-barplots-quick-start-guide-r-software-and-data-visualization 
+
+#THIS IS FEJK DATA
+
+
+```{r}
+# Step 1. Replace with participant's data. This is the data that the graph will use.
+
+px.dagbok.test <- data.frame(dag.labels = c("Baslinje", "Vecka 1", "Vecka 5"),
+                        dagbok = c(32, 11, 0))
+px.dagbok.test
+```
+
+```{r}
+# Step 2. The graph.
+
+px_graph <- ggplot(data = px.dagbok.test, aes(x = dag.labels, y = dagbok, ymax = 30)) +
+  geom_bar(stat = "identity", fill = "gray55") +
+  geom_text(aes(label = dagbok), vjust = -0.2, color = "black", size = 4) +
+  labs(title = "Diagram Över Antal Påträngande Minnen", x = "Tid", y = "Antal Påträngande Minnen") +
+  theme_test() +
+  geom_vline(xintercept = c(1.5), linetype = "dashed") +
+  theme(plot.title = element_text(hjust = 0.5),  panel.grid.major = element_line(colour = "white"), 
+  panel.grid.minor = element_line(colour = "white", size = 0.25), text=element_text(size = 12))
+
+
+# Step 3. This part adds the * text
+
+px_graph + annotate(x = 2.1, y = 23, label = "* Här började du med interventionen", vjust = 1, geom = "label")
+
+```
+
