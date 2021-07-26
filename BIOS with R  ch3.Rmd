@@ -3,10 +3,6 @@ title: "Ch. notes/examples + exercises in BioStats with R book"
 output: html_notebook
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
-
 
 # CHAPTER 3 #
 ## SECTION 3.4 ##
